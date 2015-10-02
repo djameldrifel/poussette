@@ -157,7 +157,7 @@
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         MyCurrentLocationListener myCurrentLocationListener = new MyCurrentLocationListener();
         //String provider = locationManager.getBestProvider(criteria,false);
-        String provider = LocationManager.NETWORK_PROVIDER;
+        String provider = LocationManager.GPS_PROVIDER;
         if(provider!= null && !provider.equals("")){
 
             Location location = locationManager.getLastKnownLocation(provider);
@@ -284,7 +284,7 @@
 
          if(!positionsHistory.isEmpty()){
              //Document document = gMapV2Direction.getDocument(new LatLng(36.7170131, 3.1809057), new LatLng(36.5170131, 3.1909057), GMapV2Direction.MODE_WALKING);
-             PolylineOptions polygonOptions = new PolylineOptions().width(40).color(Color.CYAN);
+             PolylineOptions polygonOptions = new PolylineOptions().width(40).color(R.color.wallet_holo_blue_light);
 
              for (Position posi : MapsActivity.positionsHistory ){
                  polygonOptions.add(posi.getLatLng());
