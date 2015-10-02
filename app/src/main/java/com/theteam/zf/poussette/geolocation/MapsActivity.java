@@ -270,16 +270,17 @@
          Calendar calendar= Calendar.getInstance();
          calendar.set(2015,7,21,00,10,00);
          MapsActivity.positionsHistory.clear();
-         MapsActivity.positionsHistory.add(new Position(36.736788, 3.041638,0,calendar.getTime()));
-         MapsActivity.positionsHistory.add(new Position(36.737151, 3.042287,0,null));
-         MapsActivity.positionsHistory.add(new Position(36.737531, 3.043244,0,null));
-         MapsActivity.positionsHistory.add(new Position(36.738127, 3.043801,0,null));
-         MapsActivity.positionsHistory.add(new Position(36.739291, 3.043222,0,null));
-         MapsActivity.positionsHistory.add(new Position(36.740513, 3.040409,0,null));
-         MapsActivity.positionsHistory.add(new Position(36.739434, 3.037552,0,null));
-         MapsActivity.positionsHistory.add(new Position(36.739116, 3.035663,0,null));
-         MapsActivity.positionsHistory.add(new Position(36.738782, 3.034128,0,null));calendar.set(2015, 7, 21, 00, 35, 00);
-         MapsActivity.positionsHistory.add(new Position(36.738499, 3.032018,0,calendar.getTime()));
+
+         MapsActivity.positionsHistory.add(new Position(36.750366, 3.013435,0,calendar.getTime()));
+         MapsActivity.positionsHistory.add(new Position(36.749837, 3.012921,0,null));
+         MapsActivity.positionsHistory.add(new Position(36.749536, 3.012621,0,null));
+         MapsActivity.positionsHistory.add(new Position(36.749306, 3.012424,0,null));
+         MapsActivity.positionsHistory.add(new Position(36.748905, 3.012357,0,null));
+         MapsActivity.positionsHistory.add(new Position(36.748567, 3.012295,0,null));
+         MapsActivity.positionsHistory.add(new Position(36.748256, 3.012223,0,null));
+         MapsActivity.positionsHistory.add(new Position(36.747933, 3.012113,0,null));
+         MapsActivity.positionsHistory.add(new Position(36.747827, 3.011333,0,null));calendar.set(2015, 7, 21, 00, 35, 00);
+         MapsActivity.positionsHistory.add(new Position(36.747868, 3.010743,0,calendar.getTime()));
 
          if(!positionsHistory.isEmpty()){
              //Document document = gMapV2Direction.getDocument(new LatLng(36.7170131, 3.1809057), new LatLng(36.5170131, 3.1909057), GMapV2Direction.MODE_WALKING);
