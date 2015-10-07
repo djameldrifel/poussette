@@ -33,9 +33,7 @@ public class LoginActivity extends Activity implements
         View.OnClickListener {
 
     private static final String TAG = MainActivity.TAG;
-    ImageButton googleLogin ;
-    ImageButton facebookLogin ;
-    ImageView personImageView;
+    private static final String DISCONNECT = "disconnect";
 
     /* Is there a ConnectionResult resolution in progress? */
     private boolean mIsResolving = false;
@@ -161,6 +159,16 @@ public class LoginActivity extends Activity implements
         mGoogleApiClient.disconnect();
     }
 
+
+    private void onSignOutClicked() {
+        // Clear the default account so that GoogleApiClient will not automatically
+        // connect in the future.
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,7 +182,10 @@ public class LoginActivity extends Activity implements
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
                 .build();
-
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra(DISCONNECT,false)){
+            onSignOutClicked();
+        }
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         /*
         setContentView(R.layout.activity_login);
