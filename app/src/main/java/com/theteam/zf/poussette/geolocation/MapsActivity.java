@@ -45,12 +45,17 @@
 
     public class MapsActivity extends FragmentActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
-        private GoogleMap mMap; // Might be null if Google Play services APK is not available.
         public static double currLatitude = 0, currLongtitude = 0, currAltitude = 0;
+        private static final long POLLING_FREQ = 1000 * 10;
+        private static final float MIN_DISTANCE = 10.0f;
         public static List<Position> positionsHistory = new ArrayList<Position>();
+
+        private GoogleMap mMap; // Might be null if Google Play services APK is not available.
         private TextView distanceTextView,timeTextView;
         private Button placeNearbyButton;
         private GoogleApiClient googleApiClient;
+        private LocationManager locationManager;
+        private MyCurrentLocationListener myCurrentLocationListener;
 
         public final int PLACE_PICKER_REQUEST = 1;
 
@@ -92,7 +97,14 @@
         setUpMapIfNeeded();
     }
 
-    /**
+        @Override
+        protected void onPause() {
+
+            locationManager.removeUpdates(myCurrentLocationListener);
+            super.onPause();
+        }
+
+        /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
      * call {@link #setUpMap()} once when {@link #mMap} is not null.
@@ -152,10 +164,10 @@
     @SuppressWarnings("ResourceType")
     private void getMyCurrentPosition() {
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        MyCurrentLocationListener myCurrentLocationListener = new MyCurrentLocationListener();
+        myCurrentLocationListener = new MyCurrentLocationListener();
         //String provider = locationManager.getBestProvider(criteria,false);
         String provider = LocationManager.GPS_PROVIDER;
         if(provider!= null && !provider.equals("")){
@@ -163,7 +175,7 @@
             Location location = locationManager.getLastKnownLocation(provider);
 
             //locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, true), 100, 0, myCurrentLocationListener);
-            locationManager.requestLocationUpdates(provider, 2000, 0, myCurrentLocationListener);
+            locationManager.requestLocationUpdates(provider, POLLING_FREQ, MIN_DISTANCE, myCurrentLocationListener);
 
             if(location != null){
 
