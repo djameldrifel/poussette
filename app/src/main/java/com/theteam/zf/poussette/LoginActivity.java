@@ -6,6 +6,7 @@ import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.hardware.SensorEvent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,9 +33,7 @@ public class LoginActivity extends Activity implements
         View.OnClickListener {
 
     private static final String TAG = MainActivity.TAG;
-    ImageButton googleLogin ;
-    ImageButton facebookLogin ;
-    ImageView personImageView;
+    private static final String DISCONNECT = "disconnect";
 
     /* Is there a ConnectionResult resolution in progress? */
     private boolean mIsResolving = false;
@@ -93,18 +92,19 @@ public class LoginActivity extends Activity implements
 
         // Show the signed-in UI
         //showSignedInUI();
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             String personName = currentPerson.getDisplayName();
             String personPhoto = currentPerson.getImage().getUrl();
             String personGooglePlusProfile = currentPerson.getUrl();
 
-
             Log.d(TAG, "personName:" + personName);
             Log.d(TAG, "personPhoto:" + personPhoto);
             Log.d(TAG, "personGooglePlusProfile:" + personGooglePlusProfile);
 
-            Intent intent = new Intent(getBaseContext(), MainActivity.class);
+            Intent inten2t = new Intent(getBaseContext(), MainActivity.class);
             intent.putExtra("personName", personName);
             intent.putExtra("personPhoto", personPhoto);
             intent.putExtra("personGooglePlusProfile", personGooglePlusProfile);
@@ -159,6 +159,16 @@ public class LoginActivity extends Activity implements
         mGoogleApiClient.disconnect();
     }
 
+
+    private void onSignOutClicked() {
+        // Clear the default account so that GoogleApiClient will not automatically
+        // connect in the future.
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,7 +182,10 @@ public class LoginActivity extends Activity implements
                 .addApi(Plus.API)
                 .addScope(new Scope(Scopes.PROFILE))
                 .build();
-
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra(DISCONNECT,false)){
+            onSignOutClicked();
+        }
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         /*
         setContentView(R.layout.activity_login);
